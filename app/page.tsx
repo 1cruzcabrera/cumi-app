@@ -57,7 +57,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <ServiceCard 
-              img="/pol0.jpeg" 
+              img="/po10.jpeg" 
               title="Camisas tipo Polo" 
               desc="Elegancia y resistencia. Ideales para uniformes que proyectan profesionalismo."
             />
