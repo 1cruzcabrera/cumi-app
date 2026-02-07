@@ -29,7 +29,7 @@ export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
       <form onSubmit={handleLogin} className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center text-blue-900 mb-6">CUMI Admin 👕</h1>
+        <h1 className="text-2xl font-bold text-center text-blue-900 mb-6">CUMI Admin </h1>
         <input
           type="email"
           placeholder="Correo"

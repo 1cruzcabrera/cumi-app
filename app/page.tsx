@@ -1,100 +1,153 @@
-'use client'
-import { useState } from 'react'
-import { supabase } from '@/lib/supabaseClient' 
+import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Home() {
-  const [busqueda, setBusqueda] = useState('')
-  const [pedido, setPedido] = useState(null)
-  const [error, setError] = useState(null)
-  const [cargando, setCargando] = useState(false)
-
-  const buscarPedido = async (e) => {
-    e.preventDefault()
-    setCargando(true)
-    setError(null)
-    setPedido(null)
-
-    try {
-      // AQUÍ ESTÁ LA MAGIA: .eq() es "igual a"
-      const { data, error } = await supabase
-        .from('pedidos')
-        .select('*')
-        .eq('codigo_rastreo', busqueda)
-        .single() // Solo queremos UNO, no una lista
-
-      if (error) throw error
-      setPedido(data)
-    } catch (error) {
-      setError('No encontramos un pedido con ese código. Revisa que esté bien escrito.')
-      console.error(error)
-    } finally {
-      setCargando(false)
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-xl overflow-hidden">
-        
-        {/* ENCABEZADO */}
-        <div className="bg-blue-600 p-6 text-center">
-          <h1 className="text-2xl font-bold text-white">Rastreo CUMI 👕</h1>
-          <p className="text-blue-100 mt-2">Ingresa tu código de seguimiento</p>
+    <div className="flex flex-col min-h-screen font-sans bg-zinc-950 text-gray-200">
+      
+      {/* 1. HERO SECTION: Portada Oscura */}
+      <section className="relative w-full h-[600px] flex items-center justify-center text-center">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/hero-bg.jpeg" 
+            alt="Fondo CUMI" 
+            fill 
+            className="object-cover brightness-[0.71]" 
+            priority
+          />
+          {/* Degradado negro suave hacia abajo */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-950/20 to-zinc-950"></div>
         </div>
 
-        {/* FORMULARIO DE BÚSQUEDA */}
-        <div className="p-6">
-          <form onSubmit={buscarPedido} className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Ej: CUMI-TEST-01"
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-            />
-            <button 
-              type="submit"
-              disabled={cargando}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
+        <div className="relative z-10 px-4 max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-white drop-shadow-2xl">
+            Bienvenid@s 
+          </h1>
+          <p className="text-xl md:text-2xl mb-10 text-gray-300 drop-shadow-md font-light">
+            Calidad, estilo y personalización garantizada.
+          </p>
+          
+          <div className="bg-zinc-900/60 backdrop-blur-md p-8 rounded-3xl border border-white/10 shadow-2xl inline-block hover:border-red-500/50 transition-colors duration-500">
+            <p className="text-xs uppercase tracking-[0.2em] mb-4 font-bold text-gray-300">
+              ¿Ya tienes un pedido?
+            </p>
+            {/* BOTÓN RASTREAR */}
+            <Link 
+              href="/rastreo" 
+              className="bg-red-600 hover:bg-red-700 text-white text-lg font-bold py-4 px-10 rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(220,38,38,0.4)] flex items-center gap-3 mx-auto justify-center"
             >
-              {cargando ? '...' : '🔍'}
-            </button>
-          </form>
-
-          {/* RESULTADOS */}
-          <div className="mt-6">
-            {error && (
-              <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm text-center">
-                {error}
-              </div>
-            )}
-
-            {pedido && (
-              <div className="border border-green-200 bg-green-50 rounded-lg p-4 animate-fade-in">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-500 font-mono">Pedido #{pedido.codigo_rastreo}</span>
-                  <span className="px-2 py-1 bg-green-200 text-green-800 text-xs font-bold rounded uppercase">
-                    {pedido.estado}
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-800">Hola, {pedido.nombre_cliente} 👋</h3>
-                <p className="text-gray-600 mt-1">{pedido.descripcion}</p>
-                
-                {/* BARRA DE PROGRESO VISUAL */}
-                <div className="mt-4 h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-green-500 transition-all duration-1000"
-                    style={{ 
-                      width: pedido.estado === 'recibido' ? '20%' : 
-                             pedido.estado === 'produccion' ? '50%' : 
-                             pedido.estado === 'terminado' ? '100%' : '10%' 
-                    }}
-                  ></div>
-                </div>
-                <p className="text-xs text-center text-gray-500 mt-1">Tu pedido está en proceso</p>
-              </div>
-            )}
+              Rastrear mi Pedido
+            </Link>
           </div>
+        </div>
+      </section>
+
+      {/* 2. SECCIÓN: Servicios */}
+      <section className="py-24 bg-zinc-950 relative overflow-hidden">
+        {/* Luz ambiental roja suave detrás */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-red-900/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-extrabold text-white mb-4">Nuestras Especialidades</h2>
+            {/* Línea divisoria roja sólida */}
+            <div className="w-24 h-1 bg-red-600 mx-auto rounded-full"></div>
+            <p className="mt-4 text-gray-400">Elige lo que deseas </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <ServiceCard 
+              img="/pol0.jpeg" 
+              title="Camisas tipo Polo" 
+              desc="Elegancia y resistencia. Ideales para uniformes que proyectan profesionalismo."
+            />
+            <ServiceCard 
+              img="/camisas1.jpeg" 
+              title="Solo Camisetas" 
+              desc="Comodidad diaria. Algodón de alta calidad perfecto para promocionales."
+            />
+            <ServiceCard 
+              img="/personalizacion.jpeg" 
+              title="Personalización" 
+              desc="Bordados, sublimación y estampados. ¡Todo lo que quieras!."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* 3. FOOTER */}
+      <footer className="bg-black text-gray-500 py-12 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+          <div>
+            <h4 className="text-2xl font-bold text-white mb-4 tracking-tighter">CUMI</h4>
+            <p className="text-sm opacity-80 leading-relaxed">
+              Transformamos tela en identidad desde Santa Ana para todo El Salvador.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-lg font-bold text-white mb-4">Contacto</h4>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-center gap-2 justify-center md:justify-start transition cursor-pointer">
+                <span className="text-red-500">📧</span> cumionline.sv@gmail.com
+              </li>
+              <li className="flex items-center gap-2 justify-center md:justify-start transition cursor-pointer">
+                <span className="text-red-500">📍</span> Santa Ana, El Salvador
+              </li>
+            </ul>
+          </div>
+          <div className="flex flex-col items-center md:items-end justify-center">
+             {/* BOTÓN WHATSAPP */}
+             <a 
+              href="https://wa.me/50370176195" 
+              target="_blank"
+              className="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-8 rounded-full transition shadow-lg hover:shadow-green-900/50 flex items-center gap-2 group transform hover:-translate-y-1"
+            >
+              Cotizar en WhatsApp
+            </a>
+            <p className="text-xs mt-8 opacity-40">
+              © {new Date().getFullYear()} CUMI.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}
+
+// COMPONENTE DE TARJETAS (CORREGIDO A FORMATO VERTICAL 3:4 IDEAL PARA ROPA)
+function ServiceCard({ img, title, desc }: { img: string, title: string, desc: string }) {
+  return (
+    <div className="bg-zinc-900/50 border border-white/5 rounded-2xl overflow-hidden hover:border-red-500/50 transition-all duration-300 group hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex flex-col">
+      
+      {/* CAMBIO 1: aspect-[3/4] 
+         Hacemos la tarjeta VERTICAL (más alta que ancha) para que quepa la camiseta.
+      */}
+      <div className="aspect-[3/4] w-full relative overflow-hidden bg-zinc-800">
+        <Image 
+          src={img} 
+          alt={title} 
+          fill 
+          /* CAMBIO 2: object-top
+             Alineamos la foto ARRIBA. Así nunca corta el cuello/logo, 
+             si sobra espacio, cortará de la cintura para abajo.
+          */
+          className="object-cover object-top group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100" 
+        />
+        
+        {/* Degradado ROJO intenso desde abajo */}
+        <div className="absolute inset-0 bg-gradient-to-t from-red-900/90 via-red-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </div>
+      
+      <div className="p-6 flex-1 flex flex-col">
+        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-red-500 transition-colors">{title}</h3>
+        <p className="text-gray-400 mb-4 leading-relaxed text-sm flex-1">
+          {desc}
+        </p>
+        
+        <div className="mt-auto">
+          <span className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest py-2 px-4 rounded-lg transition-colors cursor-pointer shadow-md">
+            Ver Más →
+          </span>
         </div>
       </div>
     </div>
