@@ -9,7 +9,7 @@ export default function Home() {
       <section className="relative w-full h-[600px] flex items-center justify-center text-center">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="/hero-bg.jpeg" 
+            src="/hero-bg-copia.jpeg" 
             alt="Fondo CUMI" 
             fill 
             className="object-cover brightness-[0.71]" 
@@ -81,7 +81,7 @@ export default function Home() {
           <div>
             <h4 className="text-2xl font-bold text-white mb-4 tracking-tighter">CUMI</h4>
             <p className="text-sm opacity-80 leading-relaxed">
-              Transformamos tela en identidad desde Santa Ana para todo El Salvador.
+              Calidad en cada prenda desde 2018, ciudad de Santa Ana.
             </p>
           </div>
           <div>

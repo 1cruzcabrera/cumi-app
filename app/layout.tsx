@@ -74,7 +74,7 @@ export default function RootLayout({
                 href="/rastreo" 
                 className="text-sm font-bold text-gray-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 px-5 py-2 rounded-full transition border border-red-500/20 hover:border-red-500/50 shadow-[0_0_10px_rgba(220,38,38,0.1)] flex items-center gap-2"
               >
-                🔍 <span className="hidden sm:inline">Rastrear</span>
+                 <span className="hidden sm:inline">Rastrea mi pedido</span>
               </Link>
 
             </div>
