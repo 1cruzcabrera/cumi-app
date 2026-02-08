@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CUMI - Camisetas y Bordados",
+  title: "CUMI - ¡Camisetas y más!",
   description: "Personalización textil y rastreo de pedidos en El Salvador",
   icons: {
     // Usamos 'url' explícitamente y le ponemos ?v=5 para obligar al navegador a recargar
